@@ -12,6 +12,26 @@ spring:
 
   thymeleaf:
     cache: false    # 开发中要关闭thymeleaf缓存，不然做了修改不能及时在页面上更新，但是给用户用的时候要加上缓存
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: xiongyuyang0909@163.com
+    password: NGJFBTLDRXYCOMTK
+    default-encoding: utf-8
+    protocol: smtps
+    properties:
+      mail:
+        debug: false
+        smtp:
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -21,6 +41,12 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+# 项目名
 server:
   servlet:
     context-path: /community
+
+# 域名
+community:
+  path:
+    domain: http://localhost:8080
