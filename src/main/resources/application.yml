@@ -50,3 +50,4 @@ server:
 community:
   path:
     domain: http://localhost:8080
+    upload: d:/data/upload
