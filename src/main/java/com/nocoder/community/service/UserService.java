@@ -19,4 +19,6 @@ public interface UserService {
     LoginTicket findLoginTicket(String ticket);
 
     int updateHeader(int userId, String headerUrl);
+
+    int updatePassword(int userId, String password);
 }

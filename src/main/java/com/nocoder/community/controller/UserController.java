@@ -1,10 +1,12 @@
 package com.nocoder.community.controller;
 
+import com.nocoder.community.annotation.LoginRequired;
 import com.nocoder.community.entity.User;
 import com.nocoder.community.service.UserService;
 import com.nocoder.community.util.CommunityUtil;
 import com.nocoder.community.util.HostHolder;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +45,37 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage() {
         return "/site/setting";
     }
 
+    // 自己写的
+    @LoginRequired
+    @RequestMapping(path = "/modifyPassword", method = RequestMethod.POST)
+    public String modifyPassword(String oldPassword, String newPassword, Model model) {
+        User user = hostHolder.getUser();
+        int id = user.getId();
+        String salt = user.getSalt();
+        String password = user.getPassword();
+
+        if (oldPassword.equals(newPassword)) {
+            model.addAttribute("errorPassword", "新密码与原密码一致！");
+            return "site/setting";
+        }
+
+        if (!password.equals(CommunityUtil.md5(oldPassword + salt))) {
+            model.addAttribute("errorPassword", "原密码不正确！");
+            return "site/setting";
+        }
+
+        userService.updatePassword(id, CommunityUtil.md5(newPassword + salt));
+
+        return "redirect:/index";
+    }
+
+    @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model) {
         if (headerImage == null) {
@@ -58,6 +86,11 @@ public class UserController {
         String filename = headerImage.getOriginalFilename();
         String suffix = filename.substring(filename.lastIndexOf("."));
         if (StringUtils.isBlank(suffix)) {
+            model.addAttribute("error", "文件的格式不正确！");
+            return "/site/setting";
+        }
+        // 完善判断图片的后缀名是否有效
+        if (!(suffix.equals("jpg") || suffix.equals("png") || suffix.equals("jpeg"))) {
             model.addAttribute("error", "文件的格式不正确！");
             return "/site/setting";
         }
@@ -75,7 +108,7 @@ public class UserController {
         }
 
         // 更新当前用户头像的路径
-        // http://localhost;8080/community/user/header/xxx.png
+        // http://localhost:8080/community/user/header/xxx.png
         User user = hostHolder.getUser();
         String headerUrl = domain + contextPath + "/user/header/" + filename;
         userService.updateHeader(user.getId(), headerUrl);
@@ -105,5 +138,6 @@ public class UserController {
             logger.error("读取头像失败：" + e.getMessage());
         }
     }
+
 
 }
