@@ -3,8 +3,10 @@ package com.nocoder.community.service.impl;
 import com.nocoder.community.dao.MessageMapper;
 import com.nocoder.community.entity.Message;
 import com.nocoder.community.service.MessageService;
+import com.nocoder.community.util.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -12,6 +14,9 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageMapper messageMapper;
+
+    @Autowired
+    private SensitiveFilter sensitiveFilter;
 
     @Override
     public List<Message> findConversations(int userId, int offset, int limit) {
@@ -36,5 +41,17 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public int findLetterUnreadCount(int userId, String conversationId) {
         return messageMapper.selectLetterUnreadCount(userId, conversationId);
+    }
+
+    @Override
+    public int addMessage(Message message) {
+        message.setContent(HtmlUtils.htmlEscape(message.getContent()));
+        message.setContent(sensitiveFilter.filter(message.getContent()));
+        return messageMapper.insertMessage(message);
+    }
+
+    @Override
+    public int readMessage(List<Integer> ids) {
+        return messageMapper.updateStatus(ids, 1);
     }
 }
