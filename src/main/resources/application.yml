@@ -33,6 +33,12 @@ spring:
             enable: true
             required: true
 
+  # redis配置
+  redis:
+    database: 11
+    host: localhost
+    port: 6379
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.nocoder.community.entity
@@ -51,3 +57,4 @@ community:
   path:
     domain: http://localhost:8080
     upload: d:/data/upload
+

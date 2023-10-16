@@ -2,6 +2,7 @@ package com.nocoder.community.controller;
 
 import com.nocoder.community.annotation.LoginRequired;
 import com.nocoder.community.entity.User;
+import com.nocoder.community.service.LikeService;
 import com.nocoder.community.service.UserService;
 import com.nocoder.community.util.CommunityUtil;
 import com.nocoder.community.util.HostHolder;
@@ -44,6 +45,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LikeService likeService;
 
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
@@ -139,5 +143,20 @@ public class UserController {
         }
     }
 
+    // 个人主页
+    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        User user = userService.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
 
+        // 用户
+        model.addAttribute("user", user);
+        // 点赞数量
+        int likeCount = likeService.findUserLikeCount(user.getId());
+        model.addAttribute("likeCount", likeCount);
+
+        return "/site/profile";
+    }
 }
