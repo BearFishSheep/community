@@ -99,7 +99,8 @@ public class UserController implements CommunityConstant {
             return "/site/setting";
         }
         // 完善判断图片的后缀名是否有效
-        if (!(suffix.equals("jpg") || suffix.equals("png") || suffix.equals("jpeg"))) {
+        if (!(suffix.equals(".jpg") || suffix.equals(".png") || suffix.equals(".jpeg"))) {
+            System.out.println(suffix);
             model.addAttribute("error", "文件的格式不正确！");
             return "/site/setting";
         }

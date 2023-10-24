@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Deprecated
 public interface LoginTicketMapper {
     // 要加上@Options，因为yml中的主键自增对sql注解不起作用
     @Insert({
