@@ -31,6 +31,9 @@ public class ServiceLogAspect {
     public void before(JoinPoint joinPoint) {
         // 用户[ip]，在[时间]，访问了[com.nocoder.community.service.xxx.yyy]
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
 
         String ip = request.getRemoteHost();
