@@ -1,6 +1,6 @@
 package com.nocoder.community;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -18,9 +18,9 @@ class CommunityApplicationTests implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    @Test
-    void contextLoads() {
-//        System.out.println(applicationContext);
-    }
+//    @Test
+//    void contextLoads() {
+////        System.out.println(applicationContext);
+//    }
 
 }

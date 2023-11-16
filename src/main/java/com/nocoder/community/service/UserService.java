@@ -2,7 +2,9 @@ package com.nocoder.community.service;
 
 import com.nocoder.community.entity.LoginTicket;
 import com.nocoder.community.entity.User;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.Map;
 
 public interface UserService {
@@ -23,4 +25,6 @@ public interface UserService {
     int updatePassword(int userId, String password);
 
     User findUserByName(String username);
+
+    Collection<? extends GrantedAuthority> getAuthorities(int userId);
 }
