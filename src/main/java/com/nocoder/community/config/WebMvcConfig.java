@@ -1,5 +1,6 @@
 package com.nocoder.community.config;
 
+import com.nocoder.community.controller.interceptor.DataInterceptor;
 import com.nocoder.community.controller.interceptor.LoginRequiredInterceptor;
 import com.nocoder.community.controller.interceptor.LoginTicketInterceptor;
 import com.nocoder.community.controller.interceptor.MessageInterceptor;
@@ -19,6 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private MessageInterceptor messageInterceptor;
 
+    @Autowired
+    private DataInterceptor dataInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginTicketInterceptor)
@@ -29,5 +33,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(messageInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.jpg", "/**/*.png", "/**/*.jpeg");
+
+        registry.addInterceptor(dataInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.jpg", "/**/*.png", "/**/*.jpeg");
+
     }
 }

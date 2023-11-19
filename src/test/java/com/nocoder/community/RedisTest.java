@@ -12,6 +12,8 @@ import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -132,5 +134,14 @@ public class RedisTest {
         });
 
         System.out.println(result);
+    }
+
+    @Test
+    public void testCalendar() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(1,6);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String day = sdf.format(cal.getTime());
+        System.out.println(day);
     }
 }
